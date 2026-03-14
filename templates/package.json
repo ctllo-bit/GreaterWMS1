@@ -6,6 +6,8 @@
   "author": "Elvis.Shi(elvis.shi@56yhz.com)",
   "private": true,
   "scripts": {
+    "dev": "NODE_OPTIONS=--openssl-legacy-provider quasar dev",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider quasar build",
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },
