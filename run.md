@@ -66,3 +66,20 @@ npm run dev
   "dev": "NODE_OPTIONS=--openssl-legacy-provider quasar dev"
 }
 npx quasar dev
+
+
+
+docker build -t greaterwms .
+docker build -t greaterwms:1.0 .
+
+docker build --no-cache -t greaterwms .
+
+docker run -d -p 9000:8008 greaterwms
+
+
+停止所有运行中的容器
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+
+
+docker rm -f $(docker ps -aq)
