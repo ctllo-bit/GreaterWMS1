@@ -4,16 +4,14 @@ import { SessionStorage, LocalStorage, Notify, Loading } from 'quasar'
 import { i18n } from './i18n'
 import Bus from './bus.js'
 
-function getBaseUrl (name) {
-  const xhr = new XMLHttpRequest()
-  const okStatus = document.location.protocol === 'file:' ? 0 : 200
-  xhr.open('GET', '../../statics/' + name, false)
-  xhr.overrideMimeType('text/html; charset=utf-8')
-  xhr.send(null)
-  return xhr.status === okStatus ? xhr.responseText : null
-}
+const hostname = window.location.hostname;     
+const isInternalIp = /^(?:10|127|172\.(?:1[6-9]|2\d|3[01])|192\.168|169\.254|100\.64)\./.test(hostname) || hostname === 'localhost';
 
-const baseurl = getBaseUrl('baseurl.txt')
+const protocol= window.location.protocol;
+const port = isInternalIp ? '8008' : window.location.port;
+const airPort=port?(':'+port):'';
+
+const baseurl = protocol + "//" + hostname + airPort;
 
 const axiosInstance = axios.create({
   baseURL: baseurl,

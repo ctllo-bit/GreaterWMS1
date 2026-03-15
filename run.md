@@ -35,7 +35,7 @@ source venv/bin/activate
 pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 
-3、初始化数据库
+3、初始化并迁移数据库
 python manage.py makemigrations
 python manage.py migrate
 
@@ -74,7 +74,7 @@ docker build -t greaterwms:1.0 .
 
 docker build --no-cache -t greaterwms .
 
-docker run -d -p 9000:8008 greaterwms
+docker run -d -p 8008:8008 greaterwms
 
 
 停止所有运行中的容器
@@ -83,3 +83,5 @@ docker rm $(docker ps -aq)
 
 
 docker rm -f $(docker ps -aq)
+
+docker exec -it greaterwms /bin/bash
