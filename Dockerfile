@@ -1,17 +1,23 @@
 FROM --platform=linux/amd64 python:3.10.18-slim-bullseye
-WORKDIR /GreaterWMS
 
-# 系统依赖 只用 SQLite，可以去掉 libpq-dev
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    libpq-dev \
  && rm -rf /var/lib/apt/lists/*
 
-# 复制依赖文件，安装 Python 依赖
+WORKDIR /GreaterWMS
+
 COPY ./requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel \
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel dj-database-url psycopg2-binary \
     && pip install --no-cache-dir -r requirements.txt
 
-# 复制项目文件
 COPY . .
 
 

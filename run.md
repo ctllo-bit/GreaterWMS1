@@ -84,4 +84,12 @@ docker rm $(docker ps -aq)
 
 docker rm -f $(docker ps -aq)
 
-docker exec -it greaterwms /bin/bash
+
+docker exec -it greaterwms_backend bash
+
+docker exec -it greaterwms_backend python manage.py shell
+from django.db import connection
+print(connection.settings_dict['ENGINE'])
+
+docker exec -it greaterwms_postgres psql -U greaterwms -d greaterwms_data
+\dt

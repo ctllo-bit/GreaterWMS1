@@ -1,0 +1,37 @@
+version: "3.8"
+
+networks:
+  ci-network:
+    driver: bridge
+
+services:
+  gpostgres:
+    image: postgres:17-alpine
+    container_name: greaterwms_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: greaterwms_data
+      POSTGRES_USER: greaterwms
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - ci-network
+    healthcheck:       
+      test: ["CMD-SHELL", "pg_isready -U greaterwms -d greaterwms_data"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  greaterwms_backend:
+    image: greaterwms:latest
+    container_name: greaterwms_backend
+    restart: unless-stopped
+    ports:
+      - "8008:8008"
+    networks:
+      - ci-network    
+    depends_on:
+      gpostgres:
+        condition: service_healthy
+    environment:
+      - DEBUG=False
+      - DATABASE_URL=postgresql://greaterwms:postgres@gpostgres:5432/greaterwms_data
